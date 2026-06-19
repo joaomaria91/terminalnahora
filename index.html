@@ -23,14 +23,6 @@
 <meta name="twitter:description" content="Análise independente em 48h por 29€. TPA, Android, telemóvel ou integração — dizemos-te qual.">
 <meta name="twitter:image" content="https://terminalnahora.pt/og-image.png">
 
-<!-- ANALYTICS — ativar quando o site estiver no ar (mede tráfego = prova de valor) -->
-<!-- Opção A (recomendada, privacidade): Plausible. Cria conta em plausible.io, depois descomenta: -->
-<!-- <script defer data-domain="terminalnahora.pt" src="https://plausible.io/js/script.js"></script> -->
-<!-- Opção B: Google Analytics 4. Substitui G-XXXXXXX pelo teu ID e descomenta:
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXX');</script>
--->
-
 <!-- Favicon SVG inline -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b5cff'/%3E%3Crect x='26' y='20' width='48' height='60' rx='7' fill='white'/%3E%3Crect x='33' y='28' width='34' height='20' rx='3' fill='%230b5cff'/%3E%3Ccircle cx='40' cy='60' r='4' fill='%230b5cff'/%3E%3Ccircle cx='54' cy='60' r='4' fill='%230b5cff'/%3E%3Ccircle cx='40' cy='71' r='4' fill='%2313b97a'/%3E%3Ccircle cx='54' cy='71' r='4' fill='%230b5cff'/%3E%3C/svg%3E">
 
@@ -223,6 +215,12 @@
   .post p{color:var(--cinza);font-size:.9rem;margin-bottom:10px}
   .post .more{font-size:.85rem;font-weight:700;color:var(--azul)}
 
+  /* COOKIE CONSENT */
+  .cookie{position:fixed;bottom:14px;left:14px;right:14px;max-width:680px;margin:0 auto;background:#fff;border:1px solid var(--borda);box-shadow:0 10px 40px rgba(11,40,107,.18);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between;z-index:100}
+  .cookie p{margin:0;font-size:.85rem;color:var(--cinza);flex:1;min-width:220px}
+  .cookie button{border:none;cursor:pointer;font-weight:700;border-radius:9px;padding:9px 16px;font-size:.85rem}
+  .cookie .ok{background:var(--azul);color:#fff}
+  .cookie .no{background:var(--cinza-claro);color:var(--tinta)}
 </style>
 </head>
 <body>
@@ -549,31 +547,31 @@
       <p>O guia independente para escolher (e perceber) os meios de pagamento em Portugal.</p>
     </div>
     <div class="posts">
-      <a class="post" href="#tipos">
+      <a class="post" href="/guia-pagamentos-obrigatorios.html">
         <div class="cover" style="background:#eaf1ff">📰</div>
         <div class="body">
           <div class="kicker">Notícia · 2026</div>
           <h3>Vai ser obrigatório aceitar pagamentos eletrónicos?</h3>
           <p>O que diz a proposta do Banco de Portugal para 2030 e o que muda para o teu negócio.</p>
-          <span class="more">Saber mais →</span>
+          <span class="more">Ler artigo →</span>
         </div>
       </a>
-      <a class="post" href="#comparar">
+      <a class="post" href="/guia-escolher-terminal.html">
         <div class="cover" style="background:#e7faf2">⚖️</div>
         <div class="body">
           <div class="kicker">Guia</div>
           <h3>TPA, Android ou telemóvel: qual escolher</h3>
           <p>As diferenças entre os tipos de terminal, lado a lado, sem linguagem técnica.</p>
-          <span class="more">Comparar →</span>
+          <span class="more">Ler artigo →</span>
         </div>
       </a>
-      <a class="post" href="#como">
+      <a class="post" href="/guia-custos-aceitar-cartao.html">
         <div class="cover" style="background:#fff3e0">💶</div>
         <div class="body">
           <div class="kicker">Guia</div>
           <h3>Quanto custa mesmo aceitar cartão?</h3>
           <p>Taxas, mensalidades e custos escondidos — e como saber se estás a pagar de mais.</p>
-          <span class="more">Como funciona →</span>
+          <span class="more">Ler artigo →</span>
         </div>
       </a>
     </div>
@@ -630,6 +628,22 @@
   </div>
 </footer>
 
+<!-- COOKIE CONSENT + GOOGLE ANALYTICS -->
+<div class="cookie" id="cookieBanner" style="display:none">
+  <p>Usamos cookies de análise (Google Analytics) para perceber como o site é usado. Aceitas?</p>
+  <div>
+    <button class="no" onclick="cookieChoice(false)">Recusar</button>
+    <button class="ok" onclick="cookieChoice(true)">Aceitar</button>
+  </div>
+</div>
+<script>
+  // --- Google Analytics 4 com consentimento (GDPR) ---
+  // Substitui G-XXXXXXXXXX pelo teu Measurement ID (em TODAS as páginas).
+  var GA_ID="G-XXXXXXXXXX";
+  function loadGA(){if(window.__ga||GA_ID.indexOf("XXXX")>-1)return;window.__ga=1;var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',GA_ID);}
+  function cookieChoice(yes){try{localStorage.setItem('cookieConsent',yes?'yes':'no');}catch(e){}document.getElementById('cookieBanner').style.display='none';if(yes)loadGA();}
+  (function(){var c;try{c=localStorage.getItem('cookieConsent');}catch(e){}if(c==='yes'){loadGA();}else if(c!=='no'){document.getElementById('cookieBanner').style.display='flex';}})();
+</script>
 <script>
   document.getElementById('leadForm').addEventListener('submit', function(e){
     e.preventDefault();
