@@ -110,8 +110,8 @@
 </div>
 <script>
   // --- Google Analytics 4 com consentimento (GDPR) ---
-  // Substitui G-XXXXXXXXXX pelo teu Measurement ID em todas as páginas.
-  var GA_ID="G-XXXXXXXXXX";
+  // Substitui G-91502732W5 pelo teu Measurement ID em todas as páginas.
+  var GA_ID="G-91502732W5";
   function loadGA(){if(window.__ga||GA_ID.indexOf("XXXX")>-1)return;window.__ga=1;var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',GA_ID);}
   function cookieChoice(yes){try{localStorage.setItem('cookieConsent',yes?'yes':'no');}catch(e){}document.getElementById('cookieBanner').style.display='none';if(yes)loadGA();}
   (function(){if(GA_ID.indexOf("XXXX")>-1)return;var c;try{c=localStorage.getItem('cookieConsent');}catch(e){}if(c==='yes'){loadGA();}else if(c!=='no'){document.getElementById('cookieBanner').style.display='flex';}})();
