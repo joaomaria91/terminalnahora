@@ -498,7 +498,9 @@
       <h2>Pede a tua análise</h2>
       <p>Preenche os dados abaixo. Recebes a referência de pagamento MB WAY / link Stripe e, após pagamento, a recomendação em 48h.</p>
     </div>
-    <form id="leadForm">
+    <form id="leadForm" action="https://formspree.io/f/xlgygake" method="POST">
+      <input type="hidden" name="_subject" value="Nova lead — Terminal na Hora (terminalnahora.pt)">
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="field">
         <label for="nome">Nome / Empresa</label>
         <input id="nome" name="nome" type="text" placeholder="Ex: Café Central, Lda." required>
@@ -537,9 +539,12 @@
         <label for="notas">Algo que devamos saber? (opcional)</label>
         <textarea id="notas" name="notas" placeholder="Ex: já uso software de faturação X, quero também vender online…"></textarea>
       </div>
-      <button type="submit" class="btn lg" style="width:100%">Continuar para pagamento (29€) →</button>
+      <button type="submit" class="btn lg" style="width:100%">Enviar pedido (29€, pagas depois) →</button>
       <div class="form-ok" id="formOk">
         ✅ Recebido! Vais ser contactado em <b id="okEmail"></b> com a referência MB WAY / link de pagamento. Assim que confirmarmos o pagamento, recebes a recomendação em 48h.
+      </div>
+      <div class="form-err" id="formErr" style="display:none;background:#fdecec;border:1px solid #e57373;color:#b71c1c;padding:16px;border-radius:12px;margin-top:16px;font-weight:600">
+        ⚠️ Não foi possível enviar agora. Tenta novamente, ou escreve-nos para <a href="mailto:geral@terminalnahora.pt">geral@terminalnahora.pt</a>.
       </div>
       <p class="muted center" style="font-size:.8rem;margin-top:14px">Os teus dados são usados apenas para prestar este serviço. Não partilhamos com terceiros.</p>
     </form>
@@ -724,15 +729,33 @@
   (function(){if(GA_ID.indexOf("XXXX")>-1)return;var c;try{c=localStorage.getItem('cookieConsent');}catch(e){}if(c==='yes'){loadGA();}else if(c!=='no'){document.getElementById('cookieBanner').style.display='flex';}})();
 </script>
 <script>
-  document.getElementById('leadForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var email = document.getElementById('email').value;
-    document.getElementById('okEmail').textContent = email;
-    document.getElementById('formOk').style.display = 'block';
-    // TODO: ligar a um serviço real de pagamento/recolha (Stripe Payment Link, Formspree, etc.)
-    this.querySelector('button[type=submit]').style.display = 'none';
-    document.getElementById('formOk').scrollIntoView({behavior:'smooth', block:'center'});
-  });
+  (function(){
+    var form=document.getElementById('leadForm');
+    var btn=form.querySelector('button[type=submit]');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var data=new FormData(form);
+      document.getElementById('formErr').style.display='none';
+      btn.disabled=true; var orig=btn.textContent; btn.textContent='A enviar…';
+      fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}})
+        .then(function(r){
+          if(r.ok){
+            document.getElementById('okEmail').textContent=(data.get('email')||'');
+            form.querySelectorAll('.field,button[type=submit]').forEach(function(el){el.style.display='none';});
+            document.getElementById('formOk').style.display='block';
+            document.getElementById('formOk').scrollIntoView({behavior:'smooth',block:'center'});
+            if(window.gtag){gtag('event','generate_lead',{form:'pedir_analise'});}
+          }else{
+            btn.disabled=false; btn.textContent=orig;
+            document.getElementById('formErr').style.display='block';
+          }
+        })
+        .catch(function(){
+          btn.disabled=false; btn.textContent=orig;
+          document.getElementById('formErr').style.display='block';
+        });
+    });
+  })();
 </script>
 </body>
 </html>
